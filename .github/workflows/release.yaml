@@ -19,7 +19,7 @@ jobs:
       run: |
          . .github/workflows/release_info.sh
          echo ::set-output name=CHANGELOG::$(echo -e "${CHANGELOG}")
-         docker run -v $(pwd):/var/tmp --entrypoint /bin/cp  hyscale:0.9.5.2 /usr/local/bin/hyscale.jar /var/tmp
+         docker run -v $(pwd):/var/tmp --entrypoint /bin/cp  hyscaledev:0.9.5.153 /usr/local/bin/hyscale.jar /var/tmp
          echo "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
          ls
     - name: Create Release
