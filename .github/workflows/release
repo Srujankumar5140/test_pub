@@ -1,0 +1,44 @@
+# Build workflow gets auto triggered upon code merge to master or release* branches
+
+name: Upload Release Asset
+
+on:
+  push:
+    tags:
+    - 'v*'
+
+jobs:
+  build:
+    name: Upload Release Asset
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - run: git fetch --prune --unshallow
+    - name: Hyscale Docker image build and push to DockerHub, Build Binary and upload to S3 Bucket
+      run: |
+          ./scripts/publish_artifacts.sh
+      env:
+        DOCKER_USERNAME: ${{ secrets.HYS_STABLE_DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.HYS_STABLE_DOCKER_PASSWORD }}
+        DOCKER_REPO: 'srujan5140'
+
+    - name: release_info # This would actually build your project, using zip for an example artifact
+      id: release_info
+      run: |
+         . .github/workflows/release_info.sh
+         echo ::set-output name=CHANGELOG::$(echo -e "${CHANGELOG}")
+         docker run -v $(pwd):/var/tmp --entrypoint /bin/cp  srujan5140/hyscale:$IMAGE_VERSION /usr/local/bin/hyscale.jar /var/tmp
+         echo "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+         ls
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: |
+          ${{ steps.release_info.outputs.CHANGELOG }}
+        draft: false
+        prerelease: false
