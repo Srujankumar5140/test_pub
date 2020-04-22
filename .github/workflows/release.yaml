@@ -44,3 +44,12 @@ jobs:
         asset_path: hyscale.jar
         asset_name: hyscale.jar
         asset_content_type: application/jar
+    - name: URL to Download Hyscale Artifact
+      run: |
+          echo -en "CHANGE LOG: \n${{ steps.release_info.outputs.CHANGELOG }} \n-------------------------------------------------------- \n" >> hyscale_version.txt
+          echo -en "Hyscale tool Build Completed Successfully with $(echo ${GITHUB_REF##*/}) and can be downloaded using \ncurl -sSL ${{ secrets.HYS_DEV_BINARY_URL }} | HYS_VERSION=$IMAGE_VERSION  bash" >> hyscale_version.txt
+
+    - name: SendGrid
+      uses: peter-evans/sendgrid-action@v1
+      env:
+        SENDGRID_API_KEY: ${{ secrets.HYS_SENDGRID_API_KEY }}
