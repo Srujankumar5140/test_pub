@@ -12,18 +12,3 @@ echo "CHANGELOG=$CHANGELOG"
 CHANGELOG="${CHANGELOG//$'%'/%25}"
 CHANGELOG="${CHANGELOG//$'\n'/%0A}"
 CHANGELOG="${CHANGELOG//$'\r'/%0D}"
-
-# If the previous release tag is the same as this tag the user likely cut a release (and in the process created a tag), which means we can skip the need to create a release
-
-# https://github.com/fsaintjacques/semver-tool/blob/master/src/semver#L5-L14
-NAT='0|[1-9][0-9]*'
-ALPHANUM='[0-9]*[A-Za-z-][0-9A-Za-z-]*'
-IDENT="$NAT|$ALPHANUM"
-FIELD='[0-9A-Za-z-]+'
-SEMVER_REGEX="\
-^[vV]?\
-($NAT)\\.($NAT)\\.($NAT)\
-(\\-(${IDENT})(\\.(${IDENT}))*)?\
-(\\+${FIELD}(\\.${FIELD})*)?$"
-
-# Used in downstream steps to determine if the release should be marked as a "prerelease" and if the build should build candidate release artifacts
