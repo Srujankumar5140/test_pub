@@ -18,7 +18,7 @@ jobs:
       id: release_info
       run: |
          . .github/workflows/release_info.sh
-         publish_artifacts.sh
+         bash - x publish_artifacts.sh
          echo ::set-output name=CHANGELOG::$(echo -e "${CHANGELOG}")
          docker run -v $(pwd):/var/tmp --entrypoint /bin/cp  srujan5140/hyscale:0.9.5.18 /usr/local/bin/hyscale.jar /var/tmp
          echo "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
@@ -30,7 +30,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
-        release_name: Release $RELEASE_VERSION
+        release_name: Release ${{ RELEASE_VERSION }}
         body: |
           ${{ steps.release_info.outputs.CHANGELOG }}
         draft: false
