@@ -39,7 +39,7 @@ jobs:
       id: test_hyscale
       run: |
          echo "${{ steps.release_info.outputs.RELEASE_VERSION }}"
-         bash -x version_check.s
+         bash -x version_check.sh
       env:
          pom_version: "${{ steps.release_info.outputs.RELEASE_VERSION }}"
     - name: Upload Release Asset
