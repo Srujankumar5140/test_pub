@@ -38,6 +38,7 @@ jobs:
     - name: Test Hyscale
       id: test_hyscale
       run: |
+         echo "${{ steps.release_info.outputs.RELEASE_VERSION }}"
          bash -x version_check.sh
     - name: Upload Release Asset
       id: upload-release-asset
