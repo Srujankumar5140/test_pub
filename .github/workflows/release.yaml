@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v2
     - run: git fetch --prune --unshallow
     - name: release_info # This would actually build your project, using zip for an example artifact
-      id: release_info
+      id: publish_artifacts
       run: |
          . .github/workflows/release_info.sh
          bash -x publish_artifacts.sh
@@ -30,7 +30,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
-        release_name: v${{ steps.release_info.outputs.RELEASE_VERSION }} Release
+        release_name: v${{ steps.publish_artifacts.outputs.RELEASE_VERSION }} Release
         body: |
           ${{ steps.release_info.outputs.CHANGELOG }}
         draft: false
