@@ -9,5 +9,5 @@ if grep -qw "$pom_version" <<< "$(hyscale --version| grep  Version)" ;
 then 
 	echo "successful"
 else
-	echo "Bye"
+	exit 1
 fi
