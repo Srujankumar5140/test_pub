@@ -47,11 +47,11 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
-         body: |
-          echo $CHANGELOG
-          ${CHANGELOG}
-          ${{ env.CHANGELOG }}
-          ${{ steps.release_info.outputs.CHANGELOG }}
+        body: |
+         echo $CHANGELOG
+         ${CHANGELOG}
+         ${{ env.CHANGELOG }}
+         ${{ steps.release_info.outputs.CHANGELOG }}
         draft: false
         prerelease: false
     - name: Upload Release Asset
