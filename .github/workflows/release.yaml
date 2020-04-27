@@ -29,10 +29,12 @@ jobs:
 
     - name: release_info_test # This would actually build your project, using zip for an example artifact
       id: release_info_test
-      if: grep -q "Release" <<< ${GITHUB_REF##*/}
       run: |
+         if grep -q "Release" <<< ${GITHUB_REF##*/}
+         then
          ./publish_artifacts.sh
          echo ::set-output name=CHANGELOG::$(echo -e "${CHANGELOG}")
          echo ${GITHUB_REF##*/}
          docker run -v $(pwd):/var/tmp --entrypoint /bin/cp  srujan5140/hyscale:$(cat test/a.txt) /usr/local/bin/hyscale.jar /var/tmp
          echo "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+         fi
