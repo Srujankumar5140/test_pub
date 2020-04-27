@@ -22,6 +22,6 @@ jobs:
       run: |
          ./publish_artifacts.sh
          echo ::set-output name=CHANGELOG::$(echo -e "${CHANGELOG}")
-         echo $GITHUB_REF
+         echo ${GITHUB_REF##*/}
          docker run -v $(pwd):/var/tmp --entrypoint /bin/cp  srujan5140/hyscale:$(cat test/a.txt) /usr/local/bin/hyscale.jar /var/tmp
          echo "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
