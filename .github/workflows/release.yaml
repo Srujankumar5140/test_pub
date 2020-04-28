@@ -29,7 +29,7 @@ jobs:
          echo ::set-output name=RELEASE_VERSION::$(cat pom.xml | grep "<version>.*</version>" | head -1 |awk -F'[><]' '{print $3}')
          docker run -v $(pwd):/var/tmp --entrypoint /bin/cp  hyscale/hyscale:$IMAGE_VERSION /usr/local/bin/hyscale.jar /var/tmp
          #sudo curl -sSL  https://get.hyscale.io | bash
-         sudo curl -sSL  ${{ secrets.HYS_STABLE_BINARY_URL }} | HYS_VERSION=$IMAGE_VERSION bash
+         sudo curl -sSL  ${{ secrets.HYS_STABLE_BINARY_URL }} | bash
          #sudo curl -sSL ${{ secrets.HYS_STABLE_BINARY_URL }} | HYS_VERSION=$IMAGE_VERSION bash
 
     - name: Create Release
