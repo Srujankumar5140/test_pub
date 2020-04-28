@@ -2,10 +2,8 @@
 set -euo pipefail
 
 # Only look to the latest release to determine the previous tag -- this allows us to skip unsupported tag formats (like `version-1.0.0`)
-export PREVIOUS_TAG=`curl --silent "https://api.github.com/repos/Srujankumar5140/test_pub/releases/latest" | grep 'tag_name' | sed -E 's/.*"([^"]+)".*/\1/'`
-echo "PREVIOUS_TAG=$PREVIOUS_TAG"
-export NEW_TAG=${GITHUB_REF/refs\/tags\//}
-export CHANGELOG=`git log $NEW_TAG...$PREVIOUS_TAG --oneline`
+#export CHANGELOG=`git log $PREVIOUS_TAG...$NEW_TAG --oneline`
+export CHANGELOG=`git log v0.9.254...v0.9.253 --oneline`
 echo "CHANGELOG=$CHANGELOG"
 
 #Format the changelog so it's markdown compatible
