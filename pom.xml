@@ -8,7 +8,7 @@
 	<groupId>io.hyscale</groupId>
 	<artifactId>hyscale</artifactId>
 	<packaging>pom</packaging>
-	<version>0.9.312</version>
+	<version>0.9.313</version>
 
 	<modules>
 		<module>image-builder</module>
