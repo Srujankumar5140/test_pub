@@ -30,7 +30,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: v${{ steps.release_info.outputs.RELEASE_VERSION }}
+        tag_name: ${{ github.ref }}
+        #tag_name: v${{ steps.release_info.outputs.RELEASE_VERSION }}
         release_name: v${{ steps.release_info.outputs.RELEASE_VERSION }} Release
         body: |
           ${{ steps.release_info.outputs.CHANGELOG }}
