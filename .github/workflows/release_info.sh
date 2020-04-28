@@ -5,7 +5,9 @@ set -euo pipefail
 #export CHANGELOG=`git log $PREVIOUS_TAG...$NEW_TAG --oneline`
 export CHANGELOG=`git log  HEAD...$PREVIOUS_TAG --oneline`
 
-echo "CHANGELOG=$CHANGELOG"
+echo "XXXXXXXXXXXXXXXXXXXXXXXXXXX"
+
+echo "$CHANGELOG"
 
 #Format the changelog so it's markdown compatible
 CHANGELOG="${CHANGELOG//$'%'/%25}"
