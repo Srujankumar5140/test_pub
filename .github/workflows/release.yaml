@@ -5,7 +5,6 @@ name: Upload Release Asset
 on:
   push:
     branches:
-    - master
     - Release*
     paths:
       - 'test/a.txt'
