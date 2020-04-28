@@ -55,6 +55,7 @@ jobs:
           echo -en "Hyscale tool Build Completed Successfully with $(echo ${GITHUB_REF##*/}) and can be downloaded using \ncurl -sSL ${{ secrets.HYS_DEV_BINARY_URL }} | HYS_VERSION=$IMAGE_VERSION  bash" >> hyscale_version.txt
       env:
          PREVIOUS_TAG: ${{ steps.release_info.outputs.PREVIOUS_TAG }}
+         NEW_TAG: v${{ steps.release_info.outputs.RELEASE_VERSION }}
 
     - name: SendGrid
       uses: peter-evans/sendgrid-action@v1
