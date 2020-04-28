@@ -32,6 +32,13 @@ jobs:
          #sudo curl -sSL  ${{ secrets.HYS_STABLE_BINARY_URL }} | bash
          #curl -sL ""https://s3-us-west-2.amazonaws.com/prod.downloads.hyscale.io/hyscale/release/$IMAGE_VERSION/hyscale -o hyscale-$IMAGE_VERSION-linux-amd64" 
          sudo curl -sSL ${{ secrets.HYS_STABLE_BINARY_URL }} | HYS_VERSION=$IMAGE_VERSION bash
+         aws s3 cp scripts/hyscale s3://$AWS_S3_BUCKET/hyscale/release/latest/hyscale
+         aws s3api put-object-tagging --bucket $AWS_S3_BUCKET  --key hyscale/release/latest/hyscale --tagging 'TagSet=[{Key=hyscalepubliccontent,Value=true}]'
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.HYS_STABLE_AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.HYS_STABLE_AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: 'us-west-2'
+        AWS_S3_BUCKET: ${{ secrets.HYS_STABLE_AWS_S3_BUCKET }}
 
     - name: Create Release
       id: create_release
