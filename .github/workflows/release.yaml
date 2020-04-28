@@ -31,7 +31,6 @@ jobs:
       id: release_info_test
       if: github.ref != 'refs/heads/master'
       run: |
-         then
          ./publish_artifacts.sh
          echo ::set-output name=CHANGELOG::$(echo -e "${CHANGELOG}")
          echo ${GITHUB_REF##*/}
