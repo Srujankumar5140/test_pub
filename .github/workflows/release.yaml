@@ -7,7 +7,7 @@ on:
     branches:
     - release/HyScale*
     paths:
-      - 'test/a.txt'
+      - 'scripts/release_version.txt'
 
 jobs:
   build:
@@ -28,6 +28,7 @@ jobs:
          git push origin --tags
          echo ::set-output name=PREVIOUS_TAG::$(curl --silent "https://api.github.com/repos/Srujankumar5140/test_pub/releases/latest" | grep 'tag_name' | sed -E 's/.*"([^"]+)".*/\1/')
          echo ::set-output name=RELEASE_VERSION::$(echo $pom_version)
+         echo ::set-output name=RELEASE_NAME::$(cat pom.xml | grep "<release.name>.*</release.name>" | head -1 |awk -F'[><]' '{print $3}')
          docker run -v $(pwd):/var/tmp --entrypoint /bin/cp  hyscale/hyscale:$IMAGE_VERSION /usr/local/bin/hyscale.jar /var/tmp
          sudo curl -sSL ${{ secrets.HYS_STABLE_BINARY_URL }} | HYS_VERSION=$IMAGE_VERSION bash
          aws s3 cp /usr/local/bin/hyscale s3://$AWS_S3_BUCKET/hyscale/release/latest/hyscale
@@ -45,9 +46,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: v${{ steps.release_info.outputs.RELEASE_VERSION }}
-        release_name: v${{ steps.release_info.outputs.RELEASE_VERSION }} Release
+        release_name: ${{ steps.release_info.outputs.RELEASE_NAME }}
         body: |
-          ${{ steps.release_info.outputs.CHANGELOG }}
+          v${{ steps.release_info.outputs.RELEASE_VERSION }} Release
         draft: false
         prerelease: false
 
