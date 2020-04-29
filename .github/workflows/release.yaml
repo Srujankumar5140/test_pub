@@ -1,11 +1,11 @@
-# Build workflow gets auto triggered upon code merge to master or release* branches
+# Build workflow gets auto triggered whenever a change to the file a.txt is merged to release branch
 
 name: Upload Release Asset
 
 on:
   push:
     branches:
-    - Release*
+    - release/HyScale*
     paths:
       - 'test/a.txt'
 
@@ -16,24 +16,19 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: git fetch --prune --unshallow
-    - name: release_info # This would actually build your project, using zip for an example artifact
+    
+    #Creates and Pushes the git tag, Download's the hyscale binary from the PROD and pointing it to the latest, Copying the hyscale.jar from the image for upoading the artifact while publishing the release, Note: pom_version and RELEASE_VERSION should always be the same(Else when tag is created it will be created from the master)
+    - name: release_info
       id: release_info
       run: |
          sudo usermod -a -G docker runner
-         getent group docker
          IMAGE_VERSION=`cat test/a.txt`
          pom_version=`cat pom.xml | grep "<version>.*</version>" | head -1 |awk -F'[><]' '{print $3}'`
          git tag v$pom_version
          git push origin --tags
          echo ::set-output name=PREVIOUS_TAG::$(curl --silent "https://api.github.com/repos/Srujankumar5140/test_pub/releases/latest" | grep 'tag_name' | sed -E 's/.*"([^"]+)".*/\1/')
          echo ::set-output name=RELEASE_VERSION::$(echo $pom_version)
-         #echo v${{ steps.release_info.outputs.RELEASE_VERSION }}
-         #git tag v${{ steps.release_info.outputs.RELEASE_VERSION }}
-         #git push origin --tags
          docker run -v $(pwd):/var/tmp --entrypoint /bin/cp  hyscale/hyscale:$IMAGE_VERSION /usr/local/bin/hyscale.jar /var/tmp
-         #sudo curl -sSL  https://get.hyscale.io | bash
-         #sudo curl -sSL  ${{ secrets.HYS_STABLE_BINARY_URL }} | bash
-         #curl -sL ""https://s3-us-west-2.amazonaws.com/prod.downloads.hyscale.io/hyscale/release/$IMAGE_VERSION/hyscale -o hyscale-$IMAGE_VERSION-linux-amd64" 
          sudo curl -sSL ${{ secrets.HYS_STABLE_BINARY_URL }} | HYS_VERSION=$IMAGE_VERSION bash
          aws s3 cp /usr/local/bin/hyscale s3://$AWS_S3_BUCKET/hyscale/release/latest/hyscale
          aws s3api put-object-tagging --bucket $AWS_S3_BUCKET  --key hyscale/release/latest/hyscale --tagging 'TagSet=[{Key=hyscalepubliccontent,Value=true}]'
