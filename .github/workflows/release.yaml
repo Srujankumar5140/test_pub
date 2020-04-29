@@ -31,7 +31,8 @@ jobs:
          echo ::set-output name=RELEASE_NAME::$(cat pom.xml | grep "<release.name>.*</release.name>" | head -1 |awk -F'[><]' '{print $3}')
          docker run -v $(pwd):/var/tmp --entrypoint /bin/cp  hyscale/hyscale:$IMAGE_VERSION /usr/local/bin/hyscale.jar /var/tmp
          sudo curl -sSL ${{ secrets.HYS_STABLE_BINARY_URL }} | HYS_VERSION=$IMAGE_VERSION bash
-         aws s3 cp /usr/local/bin/hyscale s3://$AWS_S3_BUCKET/hyscale/release/latest/hyscale
+         #aws s3 cp /usr/local/bin/hyscale s3://$AWS_S3_BUCKET/hyscale/release/latest/hyscale
+         wget https://s3-$AWS_REGION.amazonaws.com/$AWS_S3_BUCKET/hyscale/release/latest/hyscale -o /var/tmp/
          aws s3api put-object-tagging --bucket $AWS_S3_BUCKET  --key hyscale/release/latest/hyscale --tagging 'TagSet=[{Key=hyscalepubliccontent,Value=true}]'
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.HYS_STABLE_AWS_ACCESS_KEY_ID }}
