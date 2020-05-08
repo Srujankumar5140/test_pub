@@ -3,8 +3,6 @@ name: Upload Release Asset
 
 on:
   push:
-    paths-ignore:
-    - .gitignore
     branches:
     - master
     - Release*
