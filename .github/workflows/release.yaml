@@ -4,7 +4,7 @@ name: Upload Release Asset
 on:
   push:
     paths-ignore:
-    - .gitignore
+    - test/a.txt
     branches:
     - master
     - Release*
