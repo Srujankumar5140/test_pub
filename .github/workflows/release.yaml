@@ -9,6 +9,9 @@ on:
     - release/HyScale*
     paths-ignore:
     - test/a.txt
+  create:
+    branch:
+    - release/Hyscale*
 
 jobs:
   build:
