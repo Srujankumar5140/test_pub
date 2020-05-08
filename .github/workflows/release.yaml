@@ -3,12 +3,12 @@ name: Upload Release Asset
 
 on:
   push:
-    paths-ignore:
-    - test/a.txt
     branches:
     - master
     - Release*
     - release/HyScale*
+    paths-ignore:
+    - test/a.txt
 
 jobs:
   build:
