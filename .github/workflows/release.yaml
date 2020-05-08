@@ -6,6 +6,7 @@ on:
     branches:
     - master
     - Release*
+    - release/HyScale*
 
 jobs:
   build:
