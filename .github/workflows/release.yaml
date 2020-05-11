@@ -26,19 +26,6 @@ jobs:
          docker run -v $(pwd):/var/tmp --entrypoint /bin/cp  hyscale/hyscale:0.9.5.0.22 /usr/local/bin/hyscale.jar /var/tmp
          echo "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
-    - name: Build Images and Hyscale Binary for Release
-      if: github.ref != 'refs/heads/master'
-      run: |
-          ./scripts/publish_artifacts.sh
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.HYS_STABLE_AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.HYS_STABLE_AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: 'us-west-2'
-        AWS_S3_BUCKET: ${{ secrets.HYS_STABLE_AWS_S3_BUCKET }}
-        DOCKER_USERNAME: ${{ secrets.HYS_STABLE_DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.HYS_STABLE_DOCKER_PASSWORD }}
-        DOCKER_REPO: 'hyscale'
-
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
