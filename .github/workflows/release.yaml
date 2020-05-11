@@ -17,10 +17,13 @@ jobs:
     - name: release_info # This would actually build your project, using zip for an example artifact
       id: release_info
       run: |
-         cat test/a.txt
-         ./publish_artifacts.sh
+         IMAGE_VERSION=`cat scripts/release_version.txt`
+         pom_version=`cat pom.xml | grep "<version>.*</version>" | head -1 |awk -F'[><]' '{print $3}'`
+         echo ::set-output name=PREVIOUS_TAG::$(curl --silent "https://api.github.com/repos/hyscale/hyscale/releases/latest" | grep 'tag_name' | sed -E 's/.*"([^"]+)".*/\1/')
+         echo ::set-output name=RELEASE_VERSION::$(echo $pom_version)
+         echo ::set-output name=RELEASE_NAME::$(cat pom.xml | grep "<release.name>.*</release.name>" | head -1 |awk -F'[><]' '{print $3}')
          echo ::set-output name=CHANGELOG::$(echo -e "${CHANGELOG}")
-      docker run -v $(pwd):/var/tmp --entrypoint /bin/cp  hyscale/hyscale:0.9.5.0.22 /usr/local/bin/hyscale.jar /var/tmp
+         docker run -v $(pwd):/var/tmp --entrypoint /bin/cp  hyscale/hyscale:0.9.5.0.22 /usr/local/bin/hyscale.jar /var/tmp
          echo "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
     - name: Build Images and Hyscale Binary for Release
@@ -35,3 +38,27 @@ jobs:
         DOCKER_USERNAME: ${{ secrets.HYS_STABLE_DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.HYS_STABLE_DOCKER_PASSWORD }}
         DOCKER_REPO: 'hyscale'
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ steps.release_info.outputs.RELEASE_VERSION }}
+        release_name: ${{ steps.release_info.outputs.RELEASE_NAME }}
+        body: |
+          v${{ steps.release_info.outputs.RELEASE_VERSION }} Release
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+        asset_path: hyscale.jar
+        asset_name: hyscale.jar
+        asset_content_type: application/jar
