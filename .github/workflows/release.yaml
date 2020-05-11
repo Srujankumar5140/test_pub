@@ -3,12 +3,6 @@ name: Upload Release Asset
 
 on:
   push:
-    paths-ignore:
-    - test/a.txt
-    branches:
-    - master
-    - Release*
-    - release/HyScale*
   create:
     branch:
     - release/Hyscale*
@@ -26,7 +20,7 @@ jobs:
          cat test/a.txt
          ./publish_artifacts.sh
          echo ::set-output name=CHANGELOG::$(echo -e "${CHANGELOG}")
-         docker run -v $(pwd):/var/tmp --entrypoint /bin/cp  srujan5140/hyscale:0.9.5.18 /usr/local/bin/hyscale.jar /var/tmp
+      docker run -v $(pwd):/var/tmp --entrypoint /bin/cp  hyscale/hyscale:0.9.5.0.22 /usr/local/bin/hyscale.jar /var/tmp
          echo "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
     - name: Build Images and Hyscale Binary for Release
