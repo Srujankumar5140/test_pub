@@ -59,7 +59,7 @@ jobs:
     - name: Release Pointing to the Latest of DEV
       if: github.ref != 'refs/heads/master'
       run: |
-          if [ $(echo ${GITHUB_REF##*/}) == "HyScale$(cat /var/tmp/hyscale | grep HYSCALE_BUILD_VERSION= | awk -F "=" '{print $2}')" ]
+          if [ $(echo ${GITHUB_REF##*/}) == "HyScale$(cat pom.xml | grep "<version>.*</version>" | head -1 |awk -F'[><]' '{print $3}')" ]
           then
             echo $GITHUB_REF
             echo "xxxxxxx"
