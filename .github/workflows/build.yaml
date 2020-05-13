@@ -41,7 +41,7 @@ jobs:
     - name: Build Images and Hyscale Binary for Release
       if: github.ref != 'refs/heads/master'
       run: |
-          echo github.ref
+          echo ${GITHUB_REF##*/}
           #./scripts/publish_artifacts.sh
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.HYS_STABLE_AWS_ACCESS_KEY_ID }}
@@ -56,7 +56,7 @@ jobs:
     - name: Release Pointing to the Latest of DEV
       if: github.ref != 'refs/heads/master'
       run: |
-          echo github.ref
+          echo ${GITHUB_REF##*/}
           #aws s3 cp scripts/hyscale s3://$AWS_S3_BUCKET/hyscale/release/latest/hyscale
           #aws s3api put-object-tagging --bucket $AWS_S3_BUCKET  --key hyscale/release/latest/hyscale --tagging 'TagSet=[{Key=hyscalepubliccontent,Value=true}]' 
       env:
