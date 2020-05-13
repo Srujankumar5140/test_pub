@@ -19,7 +19,7 @@ jobs:
     - name: release_info
       id: release_info
       run: |
-         . .github/workflows/release_info.sh ${{ github.event.repository.full_name }}
+         . .github/workflows/release_info.sh
          echo ::set-output name=CHANGELOG::$(echo -e "${CHANGELOG}")
          wget https://s3-$AWS_REGION.amazonaws.com/$AWS_DEV_S3_BUCKET/hyscale/release/latest/hyscale -O /var/tmp/hyscale
          IMAGE_VERSION=`cat /var/tmp/hyscale | grep HYSCALE_BUILD_VERSION= | awk -F "=" '{print $2}'`
