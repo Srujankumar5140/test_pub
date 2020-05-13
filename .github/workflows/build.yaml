@@ -61,7 +61,8 @@ jobs:
       run: |
           if [ $(echo ${GITHUB_REF##*/}) == "HyScale$(cat /var/tmp/hyscale | grep HYSCALE_BUILD_VERSION= | awk -F "=" '{print $2}')" ]
           then
-          echo $GITHUB_REF
+            echo $GITHUB_REF
+            echo "xxxxxxx"
           fi
           #aws s3 cp scripts/hyscale s3://$AWS_S3_BUCKET/hyscale/release/latest/hyscale
           #aws s3api put-object-tagging --bucket $AWS_S3_BUCKET  --key hyscale/release/latest/hyscale --tagging 'TagSet=[{Key=hyscalepubliccontent,Value=true}]' 
