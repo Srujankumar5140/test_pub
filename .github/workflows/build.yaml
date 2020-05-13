@@ -2,6 +2,16 @@ name: Upload Release Asset
 
 on:
   push:
+    paths-ignore:
+    - .gitignore
+    - docs/images/*
+    - docs/*
+    - LICENSE
+    - README.md
+    - scripts/release_version.txt
+    branches:
+    - master
+    - release/HyScale*
   create:
     branch:
     - "release/Hyscale*"
