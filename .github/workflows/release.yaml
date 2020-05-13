@@ -19,6 +19,8 @@ jobs:
     - name: release_info
       id: release_info
       run: |
+         . .github/workflows/release_info.sh ${{ github.event.repository.full_name }}
+         echo ::set-output name=CHANGELOG::$(echo -e "${CHANGELOG}")
          wget https://s3-$AWS_REGION.amazonaws.com/$AWS_DEV_S3_BUCKET/hyscale/release/latest/hyscale -O /var/tmp/hyscale
          IMAGE_VERSION=`cat /var/tmp/hyscale | grep HYSCALE_BUILD_VERSION= | awk -F "=" '{print $2}'`
          pom_version=`cat pom.xml | grep "<version>.*</version>" | head -1 |awk -F'[><]' '{print $3}'`
@@ -60,10 +62,7 @@ jobs:
 
     - name: URL to Download Hyscale Artifact
       run: |
-          bash -x .github/workflows/release_info.sh
-          #. .github/workflows/release_info.sh
-          echo -e ${CHANGELOG}
-          echo -en "CHANGE LOG: \n${CHANGELOG} \n-------------------------------------------------------- \n" >> hyscale_version.txt
+          echo -en "CHANGE LOG: \n${{ steps.release_info.outputs.CHANGELOG }} \n-------------------------------------------------------- \n" >> hyscale_version.txt
           echo -en "Hyscale tool Build Completed Successfully with $(echo ${GITHUB_REF##*/}) and can be downloaded using \ncurl -sSL ${{ secrets.HYS_STABLE_BINARY_URL }} | bash\nJar can be Downloaded using\nwget https://github.com/hyscale/hyscale/releases/download/v${{ steps.release_info.outputs.RELEASE_VERSION }}/hyscale.jar" >> hyscale_version.txt
 
     - name: SendGrid
