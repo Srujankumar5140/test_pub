@@ -59,6 +59,8 @@ jobs:
     - name: Release Pointing to the Latest of DEV
       if: github.ref != 'refs/heads/master'
       run: |
+          echo ${GITHUB_REF##*/}
+          echo HyScale$(cat pom.xml | grep "<version>.*</version>" | head -1 |awk -F'[><]' '{print $3}')
           if [ $(echo ${GITHUB_REF##*/}) == "HyScale$(cat pom.xml | grep "<version>.*</version>" | head -1 |awk -F'[><]' '{print $3}')" ]
           then
             echo $GITHUB_REF
