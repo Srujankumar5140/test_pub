@@ -29,6 +29,7 @@ jobs:
       if: github.ref == 'refs/heads/master'
       run: |
           ./scripts/publish_artifacts.sh
+          echo "xxxxxxxxxxxxxxxxxxxxx"
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.HYS_DEV_AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.HYS_DEV_AWS_SECRET_ACCESS_KEY }}
