@@ -40,7 +40,6 @@ jobs:
 
     - name: Build Images and Hyscale Binary for Release
       run: |
-          echo ${GITHUB_REF}
           if [[ "x`echo ${GITHUB_REF}`" == *"release/HyScale"* ]]
           then
             ./scripts/publish_artifacts.sh
