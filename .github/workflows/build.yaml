@@ -77,7 +77,7 @@ jobs:
           then
             echo -en "Hyscale tool Build Completed Successfully with $(echo ${GITHUB_REF##*/}) and can be downloaded using \ncurl -sSL ${{ secrets.HYS_STABLE_BINARY_URL }} | HYS_VERSION=$IMAGE_VERSION  bash" >> hyscale_version.txt
           else 
-            echo -en "Hyscale tool Build triggered but nothing is built or published, only the workflows is triggered as the branch is $(echo ${GITHUB_REF##*/})" >> hyscale_version.txt
+            echo -en "Hyscale tool Build triggered but nothing is built or published as the branch is $(echo ${GITHUB_REF##*/})" >> hyscale_version.txt
           fi
 
     - name: SendGrid
