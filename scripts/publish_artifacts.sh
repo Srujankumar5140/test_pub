@@ -20,5 +20,5 @@ aws_cp_upload()
   aws s3api put-object-tagging --bucket $AWS_S3_BUCKET  --key hyscale/release/$1/hyscale --tagging 'TagSet=[{Key=hyscalepubliccontent,Value=true}]'
 }
 
-docker_build_push
-aws_cp_upload $artifactory_version
+#docker_build_push
+#aws_cp_upload $artifactory_version
