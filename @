@@ -27,7 +27,6 @@ jobs:
          . ./scripts/publish_artifacts.sh
          echo ::set-output name=RELEASE_VERSION::$(echo $project_version)
          echo ::set-output name=RELEASE_NAME::$(cat pom.xml | grep "<release.name>.*</release.name>" | head -1 |awk -F'[><]' '{print $3}')
-         cat /var/tmp/hyscale
          aws s3 cp /var/tmp/hyscale s3://$AWS_S3_BUCKET/hyscale/release/latest/hyscale
          aws s3api put-object-tagging --bucket $AWS_S3_BUCKET  --key hyscale/release/latest/hyscale --tagging 'TagSet=[{Key=hyscalepubliccontent,Value=true}]'
       env:

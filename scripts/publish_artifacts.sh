@@ -34,5 +34,6 @@ then
 elif [ $GITHUB_WORKFLOW == "Release"  ]
 then
   grep -RiIl '@@HYSCALE_URL@@' |grep -v publis_artifacts.sh| xargs sed -i "s|@@HYSCALE_URL@@|https://github.com/hyscale/hyscale/releases/download/v$project_version/hyscale.jar|g"
+  grep -RiIl '@@HYSCALE_BUILD_VERSION@@' |grep -v publish_artifacts.sh| xargs sed -i "s|@@HYSCALE_BUILD_VERSION@@|$project_version|g"
   aws_cp_upload latest "hyscale hyscale.ps1 hyscale_osx"
 fi
