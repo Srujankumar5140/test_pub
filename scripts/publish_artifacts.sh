@@ -9,7 +9,7 @@ docker_build_push()
   docker build -t $DOCKER_REPO/hyscale:$artifactory_version .
   docker login --username=$DOCKER_USERNAME  --password=$DOCKER_PASSWORD
   docker push $DOCKER_REPO/hyscale:$artifactory_version
-  docker run -v /home/runner/work/hyscale/hyscale/scripts:/var/tmp --entrypoint /bin/cp  $DOCKER_REPO/hyscale:$artifactory_version /usr/local/bin/hyscale.jar /var/tmp
+  docker run -v /home/runner/work/hyscale/scripts:/var/tmp --entrypoint /bin/cp  $DOCKER_REPO/hyscale:$artifactory_version /usr/local/bin/hyscale.jar /var/tmp
   docker logout
 }
 
@@ -17,6 +17,7 @@ aws_cp_upload()
 {
   for script in $2
   do 
+    cat $script
     aws s3 cp scripts/$script s3://$AWS_S3_BUCKET/hyscale/release/$1/$script
     aws s3api put-object-tagging --bucket $AWS_S3_BUCKET  --key hyscale/release/$1/$script --tagging 'TagSet=[{Key=hyscalepubliccontent,Value=true}]'
   done
@@ -33,5 +34,5 @@ then
 elif [ $GITHUB_WORKFLOW == "Release"  ]
 then
   grep -RiIl '@@HYSCALE_URL@@' |grep -v publis_artifacts.sh| xargs sed -i "s|@@HYSCALE_URL@@|https://github.com/hyscale/hyscale/releases/download/v$project_version/hyscale.jar|g"
-  aws_cp_upload latest "/var/tmp/hyscale scripts/hyscale.ps1 scripts/hyscale_osx"
+  aws_cp_upload latest "hyscale hyscale.ps1 hyscale_osx"
 fi
