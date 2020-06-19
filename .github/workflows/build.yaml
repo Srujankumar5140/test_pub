@@ -81,6 +81,11 @@ jobs:
             echo -en "Hyscale tool Build triggered but nothing is built or published as the branch is $(echo ${GITHUB_REF##*/})" >> hyscale_version.txt
           fi
 
+    - name: Build Failure Report for mail
+      if: ${{ failure() }}
+      run: |
+          echo -en "Hyscale tool Build Failed with $(echo ${GITHUB_REF##*/})" >> hyscale_version.txt
+
     - name: SendGrid
       uses: peter-evans/sendgrid-action@v1
       env:
