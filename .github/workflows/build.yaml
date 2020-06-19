@@ -87,7 +87,13 @@ jobs:
           echo -en "Hyscale tool Build Failed with $(echo ${GITHUB_REF##*/})" >> hyscale_version.txt
 
     - name: SendGrid
-      if: ${{ always() }}
+      if: ${{ failure() }}
+      uses: peter-evans/sendgrid-action@v1
+      env:
+        SENDGRID_API_KEY: ${{ secrets.HYS_SENDGRID_API_KEY }}
+        SCRIPT_FILEPATH: ./github/failure_sendgrid.js
+
+    - name: SendGrid
       uses: peter-evans/sendgrid-action@v1
       env:
         SENDGRID_API_KEY: ${{ secrets.HYS_SENDGRID_API_KEY }}
