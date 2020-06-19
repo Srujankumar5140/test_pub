@@ -4,7 +4,7 @@ const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const msg = {
-    to: 'srujankumar5140@gmail.com,srujankumar.gourishetty@gmail.com',
+    to: 'srujankumar5140@gmail.com;srujankumar.gourishetty@gmail.com',
     from: 'srujan.gourishetty@hyscale.io',
     subject: 'Hyscale Tool Build Failed',
     text: 'Hyscale Tool build failed',
