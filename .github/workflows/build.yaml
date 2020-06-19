@@ -28,7 +28,8 @@ jobs:
     - name: Build Images and Hyscale Binary for DEV
       if: github.ref == 'refs/heads/master'
       run: |
-          ./scripts/publish_artifacts.sh
+          echo "Hello"
+          #./scripts/publish_artifacts.sh
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.HYS_DEV_AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.HYS_DEV_AWS_SECRET_ACCESS_KEY }}
@@ -81,7 +82,7 @@ jobs:
             echo -en "Hyscale tool Build triggered but nothing is built or published as the branch is $(echo ${GITHUB_REF##*/})" >> hyscale_version.txt
           fi
 
-    - name: Build Failure Report for mail
+    - name: Mail Build Failure
       if: ${{ failure() }}
       run: |
           echo -en "Hyscale tool Build Failed with $(echo ${GITHUB_REF##*/})" >> hyscale_version.txt
