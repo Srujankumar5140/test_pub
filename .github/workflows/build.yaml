@@ -91,7 +91,7 @@ jobs:
       uses: peter-evans/sendgrid-action@v1
       env:
         SENDGRID_API_KEY: ${{ secrets.HYS_SENDGRID_API_KEY }}
-        SCRIPT_FILEPATH: ./github/failure_sendgrid.js
+        SCRIPT_FILEPATH: .github/failure_sendgrid.js
 
     - name: SendGrid
       uses: peter-evans/sendgrid-action@v1
