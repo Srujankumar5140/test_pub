@@ -29,7 +29,7 @@ jobs:
       if: github.ref == 'refs/heads/master'
       run: |
           echo "Hello"
-          # ./scripts/publish_artifacts.sh
+          ./scripts/publish_artifacts.sh
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.HYS_DEV_AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.HYS_DEV_AWS_SECRET_ACCESS_KEY }}
@@ -81,11 +81,6 @@ jobs:
           else 
             echo -en "Hyscale tool Build triggered but nothing is built or published as the branch is $(echo ${GITHUB_REF##*/})" >> hyscale_version.txt
           fi
-
-    - name: Mail Build Failure
-      if: ${{ failure() }}
-      run: |
-          echo -en "Hyscale tool Build Failed with $(echo ${GITHUB_REF##*/})" >> hyscale_version.txt
 
     - name: SendGrid Action for Build Failure
       if: ${{ failure() }}
