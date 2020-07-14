@@ -23,7 +23,7 @@ jobs:
          echo ::set-output name=CHANGELOG::$(echo -e "${CHANGELOG}")
          for binary in hyscale win/hyscale.ps1 mac/hyscale
          do
-           wget https://s3-$AWS_REGION.amazonaws.com/$AWS_DEVA_S3_BUCKET/hyscale/release/latest/$binary -O /var/tmp/$binary
+           wget https://s3-$AWS_REGION.amazonaws.com/$AWS_DEV_S3_BUCKET/hyscale/release/latest/$binary -O /var/tmp/$binary
            aws s3 cp /var/tmp/hyscale s3://$AWS_S3_BUCKET/hyscale/release/latest/$binary
            aws s3api put-object-tagging --bucket $AWS_S3_BUCKET  --key hyscale/release/latest/$binary --tagging 'TagSet=[{Key=hyscalepubliccontent,Value=true}]'
          done
@@ -40,7 +40,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.HYS_STABLE_AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: 'us-west-2'
         AWS_S3_BUCKET: ${{ secrets.HYS_STABLE_AWS_S3_BUCKET }}
-        AWS_DEV_S3_BUCKET: ${{ secrets.HYS_DEV_AWS_S3_BUCKET }}
+        AWS_DEV_S3_BUCKET: ${{ secrets.HYS_STABLE_AWS_S3_BUCKET }}
         AWS_DEVA_S3_BUCKET: dev.downloads.hyscale.io
 
     - name: Create Release
