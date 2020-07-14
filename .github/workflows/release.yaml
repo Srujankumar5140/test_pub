@@ -21,7 +21,7 @@ jobs:
       run: |
          . .github/workflows/release_info.sh
          echo ::set-output name=CHANGELOG::$(echo -e "${CHANGELOG}")
-         for binary in hyscale win/hyscale.ps1 mac/hyscale
+         for binary in hyscale-linux-amd64 hyscale-linux-386 win/hyscale-windows-amd64.exe win/hyscale-windows-386.exe mac/hyscale-darwin-amd64 mac/hyscale-darwin-386 hyscale.jar
          do
            wget https://s3-$AWS_REGION.amazonaws.com/$AWS_DEV_S3_BUCKET/hyscale/release/latest/$binary -O /var/tmp/$binary
            aws s3 cp /var/tmp/hyscale s3://$AWS_S3_BUCKET/hyscale/release/latest/$binary
