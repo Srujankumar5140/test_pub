@@ -21,21 +21,14 @@ jobs:
       run: |
          . .github/workflows/release_info.sh
          echo ::set-output name=CHANGELOG::$(echo -e "${CHANGELOG}")
-         for binary in hyscale
+         for binary in hyscale win/hyscale.exe mac/hyscale hyscale.jar
          do
            wget https://s3-$AWS_REGION.amazonaws.com/$AWS_DEVA_S3_BUCKET/hyscale/release/latest/$binary -O /var/tmp/$binary
-           aws s3 cp /var/tmp/hyscale s3://$AWS_S3_BUCKET/hyscale/release/latest/$binary
+           aws s3 cp /var/tmp/$binary s3://$AWS_S3_BUCKET/hyscale/release/latest/$binary
            aws s3api put-object-tagging --bucket $AWS_S3_BUCKET  --key hyscale/release/latest/$binary --tagging 'TagSet=[{Key=hyscalepubliccontent,Value=true}]'
          done
-         IMAGE_VERSION=`cat /var/tmp/hyscale | grep HYSCALE_BUILD_VERSION= | awk -F "=" '{print $2}'`
-         docker run -v $(pwd):/var/tmp --entrypoint /bin/cp  hyscale/hyscale:$IMAGE_VERSION /usr/local/bin/hyscale.jar /var/tmp
-         cp hyscale.jar /var/tmp/
-         # . ./scripts/publish_artifacts.sh
          echo ::set-output name=RELEASE_VERSION::$(cat pom.xml | grep "<version>.*</version>" | head -1 |awk -F'[><]' '{print $3}')
          echo ::set-output name=RELEASE_NAME::$(cat pom.xml | grep "<release.name>.*</release.name>" | head -1 |awk -F'[><]' '{print $3}')
-         #cat /var/tmp/hyscale
-         #aws s3 cp /var/tmp/hyscale s3://$AWS_S3_BUCKET/hyscale/release/latest/hyscale
-         #aws s3api put-object-tagging --bucket $AWS_S3_BUCKET  --key hyscale/release/latest/hyscale --tagging 'TagSet=[{Key=hyscalepubliccontent,Value=true}]'
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.HYS_STABLE_AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.HYS_STABLE_AWS_SECRET_ACCESS_KEY }}
