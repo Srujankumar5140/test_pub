@@ -40,16 +40,17 @@ jobs:
         AWS_DEV_S3_BUCKET: ${{ secrets.HYS_STABLE_AWS_S3_BUCKET }}
         AWS_DEVA_S3_BUCKET: dev.downloads.hyscale.io
 
-    - run: |
-        set -x
-        assets=()
-        for asset in /var/tmp/hyscale /var/tmp/win/hyscale.ps1 /var/tmp/mac/hyscale_mac /var/tmp/hyscale.jar; do
-          assets+=("-a" "$asset")
-        done
-        tag_name="${GITHUB_REF##*/}"
-        hub release create "${assets[@]}" -m "${{ steps.release_info.outputs.RELEASE_NAME }}" -m "v${{ steps.release_info.outputs.RELEASE_NAME }} Release" "$tag_name"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Create and Upload Release
+        run: |
+          set -x
+          assets=()
+          for asset in /var/tmp/hyscale /var/tmp/win/hyscale.ps1 /var/tmp/mac/hyscale_mac /var/tmp/hyscale.jar; do
+            assets+=("-a" "$asset")
+          done
+          tag_name="${GITHUB_REF##*/}"
+          hub release create "${assets[@]}" -m "${{ steps.release_info.outputs.RELEASE_NAME }}" -m "v${{ steps.release_info.outputs.RELEASE_VERSION }} Release" "$tag_name"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: URL to Download Hyscale Artifact
       run: |
