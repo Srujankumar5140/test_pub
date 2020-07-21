@@ -55,7 +55,7 @@ jobs:
     - run: |
         set -x
         assets=()
-        for asset in /var/tmp/*; do
+        for asset in /var/tmp/hyscale /var/tmp/win/hyscale.ps1 /var/tmp/mac/hyscale /var/tmp/hyscale.jar; do
           assets+=("-a" "$asset")
         done
         tag_name="${GITHUB_REF##*/}"
