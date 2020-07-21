@@ -29,6 +29,7 @@ jobs:
            aws s3 cp /var/tmp/$binary s3://$AWS_S3_BUCKET/hyscale/release/latest/$binary
            aws s3api put-object-tagging --bucket $AWS_S3_BUCKET  --key hyscale/release/latest/$binary --tagging 'TagSet=[{Key=hyscalepubliccontent,Value=true}]'
          done
+         mv /var/tmp/mac/hyscale /var/tmp/mac/hyscale_mac
          echo ::set-output name=RELEASE_VERSION::$(cat pom.xml | grep "<version>.*</version>" | head -1 |awk -F'[><]' '{print $3}')
          echo ::set-output name=RELEASE_NAME::$(cat pom.xml | grep "<release.name>.*</release.name>" | head -1 |awk -F'[><]' '{print $3}')
       env:
@@ -42,7 +43,7 @@ jobs:
     - run: |
         set -x
         assets=()
-        for asset in /var/tmp/hyscale /var/tmp/win/hyscale.ps1 /var/tmp/mac/hyscale /var/tmp/hyscale.jar; do
+        for asset in /var/tmp/hyscale /var/tmp/win/hyscale.ps1 /var/tmp/mac/hyscale_mac /var/tmp/hyscale.jar; do
           assets+=("-a" "$asset")
         done
         tag_name="${GITHUB_REF##*/}"
