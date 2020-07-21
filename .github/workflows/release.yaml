@@ -47,7 +47,7 @@ jobs:
           assets+=("-a" "$asset")
         done
         tag_name="${GITHUB_REF##*/}"
-        hub release create "${assets[@]}" -m "${{ steps.release_info.outputs.RELEASE_NAME }}" "$tag_name"
+        hub release create "${assets[@]}" -m "${{ steps.release_info.outputs.RELEASE_NAME }}" -m "v${{ steps.release_info.outputs.RELEASE_NAME }} Release" "$tag_name"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
