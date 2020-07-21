@@ -39,19 +39,6 @@ jobs:
         AWS_DEV_S3_BUCKET: ${{ secrets.HYS_STABLE_AWS_S3_BUCKET }}
         AWS_DEVA_S3_BUCKET: dev.downloads.hyscale.io
 
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: ${{ steps.release_info.outputs.RELEASE_NAME }}
-        body: |
-          v${{ steps.release_info.outputs.RELEASE_VERSION }} Release
-        draft: false
-        prerelease: false
-
     - run: |
         set -x
         assets=()
