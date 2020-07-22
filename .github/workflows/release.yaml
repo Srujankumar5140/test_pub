@@ -32,6 +32,7 @@ jobs:
          mv /var/tmp/mac/hyscale /var/tmp/mac/hyscale_mac
          echo ::set-output name=RELEASE_VERSION::$(cat pom.xml | grep "<version>.*</version>" | head -1 |awk -F'[><]' '{print $3}')
          echo ::set-output name=RELEASE_NAME::$(cat pom.xml | grep "<release.name>.*</release.name>" | head -1 |awk -F'[><]' '{print $3}')
+         echo $RELEASE_NAME
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.HYS_STABLE_AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.HYS_STABLE_AWS_SECRET_ACCESS_KEY }}
