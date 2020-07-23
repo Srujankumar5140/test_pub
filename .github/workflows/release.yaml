@@ -54,8 +54,6 @@ jobs:
         tag_name="${GITHUB_REF##*/}"
         hub release create "${assets[@]}" -m "${{ steps.release_info.outputs.RELEASE_NAME }}" -m "v${{ steps.release_info.outputs.RELEASE_VERSION }} Release
         Find the Below Installation Instructions 
-        '\e]8;;http://example.com\aThis is a hyperlink\e]8;;\a'
-        '\e]8;;https://github.com/hyscale/hyscale/wiki/Installation\aInstalation\e]8;;\a'
         https://github.com/hyscale/hyscale/wiki/Installation" "$tag_name"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
