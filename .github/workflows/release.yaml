@@ -52,7 +52,7 @@ jobs:
           assets+=("-a" "$asset")
         done
         tag_name="${GITHUB_REF##*/}"
-        hub release create "${assets[@]}" -m "${{ steps.release_info.outputs.RELEASE_NAME }}" -m "v${{ steps.release_info.outputs.RELEASE_VERSION }} Release" "$tag_name"
+        hub release create "${assets[@]}" -m "${{ steps.release_info.outputs.RELEASE_NAME }}" -m "v${{ steps.release_info.outputs.RELEASE_VERSION }} Release\nFind the Below Installation Instructions\nhttps://github.com/hyscale/hyscale/wiki/Installation" "$tag_name"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
